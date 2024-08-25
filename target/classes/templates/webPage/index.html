@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Apartment Name</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!--    <link rel="shortcut icon" th:href="@{/webStatic/img/favicon.ico}" href="img/favicon.ico" type="image/x-icon">-->
+    <link rel="apple-touch-icon" th:href="@{/webStatic/img/apple-touch-icon.png}" href="img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" th:href="@{/webStatic/img/apple-touch-icon-72x72.png}" sizes="72x72"
+          href="img/apple-touch-icon-72x72.png">
+    <!--    <link rel="apple-touch-icon" th:href="@{/webStatic/img/apple-touch-icon-114x114.png}" sizes="114x114"-->
+    <!--          href="img/apple-touch-icon-114x114.png">-->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webStatic/css/bootstrap.css}" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/webStatic/fonts/font-awesome/css/font-awesome.css}"
+          href="fonts/font-awesome/css/font-awesome.css">
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webStatic/css/style.css}" href="css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/webStatic/css/nivo-lightbox/nivo-lightbox.css}"
+          href="css/nivo-lightbox/nivo-lightbox.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/webStatic/css/nivo-lightbox/default.css}"
+          href="css/nivo-lightbox/default.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/adminStatic/layui/css/layui.css}">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        #webOut:hover, #editPhone:hover {
+            cursor: pointer;
+            text-decoration: underline;
+            color: rgba(255, 255, 255, .9);
+        }
+
+        .text_span {
+            display: inline-block;
+            white-space: nowrap;
+            min-width: 500px;
+            max-width: 500px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+<nav id="menu" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+            <a class="navbar-brand page-scroll" href="#page-top" style="font-size: 28px">Apartment Name</a>
+        </div>
+
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right" style="font-size: 12px;">
+                <li><a href="#header" class="page-scroll">Home</a></li>
+                <li><a href="javascript:;" id="buyHouse" class="page-scroll">Price Check</a></li>
+                <li><a href="javascript:;" id="buyCarPark" class="page-scroll">Parking Fee Inquiry</a></li>
+                <li><a href="#notice" class="page-scroll">Announcements</a></li>
+                <li><a href="#access" class="page-scroll">Entry/Exit Registration</a></li>
+                <li><a href="#services" class="page-scroll">Complaints</a></li>
+                <li><a href="#about" class="page-scroll">Repair Services</a></li>
+                <li><a href="#testimonials" class="page-scroll">About Us</a></li>
+                <li><a th:href="@{main.html}" target="_blank" class="page-scroll">Website Backend</a></li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<!-- Header -->
+<header id="header">
+    <div class="intro">
+        <div class="overlay">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 intro-text">
+                        <h1 style="font-size: 52px">Welcome Home!</h1>
+                        <p> Life is a book without words; those with sharp eyes can see the brilliant phrases. Books are life with words; only those with rich emotions can deeply understand them.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Get in Touch Section -->
+<div id="get-touch">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6 col-md-offset-1">
+                <h3 style="font-size: 20px">Please log in if you need repair or complaint services!</h3>
+                <p>Simply enter the name and phone number you registered with the property management when logging in!</p>
+            </div>
+            <div class="col-xs-12 col-md-4 text-center">
+                <a th:if="${session.webUser == null}" class="btn btn-custom btn-lg page-scroll" id="toLogin">Login</a>
+                <div style="font-size: 16px; height: 64px;" th:if="${session.webUser != null}">
+                    <div>
+
+                        <div style="width: 250px; text-align: center; margin: 0 auto; line-height: 30px">
+                            Welcome, you are already logged in:
+                            <input type="hidden" th:value="${session.webUser.id}" id="userId">
+                            <input type="hidden" th:value="${session.webUser.userName}" id="userName">
+                            <span th:text="${session.webUser.userName}"></span>&emsp;
+                        </div>
+                        <div style="width: 150px; text-align: center; margin: 0 auto; line-height: 30px">
+                            <span id="editPhone">Change Details</span>&nbsp;
+                            <span id="webOut">Sign Out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Announcements -->
+<div id="notice">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="about-text">
+                    <h2 style="font-size: 30px;">
+                        Announcements
+                        <button type="button" class="btn btn-primary" id="createNotice" style="float: right;">
+                            Post Announcement
+                        </button>
+                        <button type="button" class="btn btn-primary" id="meNotice"
+                                style="float: right; margin-right: 8px">
+                            My Announcements
+                        </button>
+                        <button type="button" class="btn btn-primary" id="meComment"
+                                style="float: right; margin-right: 8px">
+                            My Comments
+                        </button>
+                        <div style="clear: both"></div>
+                    </h2>
+                    <div class="col-lg-12 col-sm-12 col-xs-12" style="padding-left: 0;
+                            max-height: 245px; min-height: 245px">
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default" th:each="notice, eachStatus : ${noticeInfo}">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           th:href="'#title'+${notice.id}" style="font-size: 15px">
+                                            [[${notice.title}]]&emsp;-&emsp;
+                                            <span style="font-size: 14px">[[${notice.createDate}]]</span>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div th:id="'title'+${notice.id}" th:class="${eachStatus.index == 0 ?
+                                            'panel-collapse collapse in' : 'panel-collapse collapse'}">
+                                    <div class="panel-body" style="padding: 8px 12px;">
+                                        <span th:text="${notice.content}" class="text_span"></span>
+
+
+                                        <div style="margin-top: 2px">
+                                            <button type="button" class="btn btn-primary noticeInfoBtn"
+                                                    th:data-id="${notice.id}">
+                                                View Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <nav aria-label="Page navigation">
+                            <input type="hidden" name="currPage" th:value="${currPage}">
+                            <input type="hidden" name="totalPage" th:value="${totalPage}">
+                            <ul class="pagination">
+                                <li id="prev">
+                                    <a href="javascript:;" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li th:each="page : ${pagesList}"
+                                    th:class="${currPage == page ? 'active pageNum' : 'pageNum'}">
+                                    <a href="javascript:;">[[${page}]]</a>
+                                </li>
+                                <li id="next">
+                                    <a href="javascript:;" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <img th:src="@{/webStatic/img/new_index.jpg}" class="img-responsive" alt="" width="585" height="350">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Entry/Exit Registration -->
+<div id="access">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <img th:src="@{/webStatic/img/portfolio/05-large.jpg}" class="img-responsive" alt="" width="585"
+                     height="350">
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <div class="about-text">
+                    <h2 style="font-size: 30px">Entry/Exit Registration</h2>
+                    <div class="col-lg-12 col-sm-12 col-xs-12" style="padding-left: 0;">
+                        <form role="form" style="position: relative; top: 0">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">Your Name</span>
+                                <input type="text" class="form-control" name="accessUserName" placeholder="Enter your name"
+                                       aria-describedby="basic-addon1"
+                                       th:value="${session.webUser != null ? session.webUser.userName : ''}" readonly>
+                            </div>
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">Contact Number</span>
+                                <input type="text" class="form-control" name="accessPhone" placeholder="Enter your contact number"
+                                       aria-describedby="basic-addon1"
+                                       th:value="${session.webUser != null ? session.webUser.phone : ''}" readonly>
+                            </div>
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">Are you a resident of this community?</span>
+                                <div class="form-group">
+                                    <select class="form-control" name="type" autocomplete="off">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">Are you part of a special group?</span>
+                                <div class="form-group">
+                                    <select class="form-control" name="type1" autocomplete="off">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="input-group-addon">Remarks</span>
+                                <textarea class="form-control" rows="5" name="desc"
+                                          placeholder="Please provide any additional information."
+                                          style="resize: none"></textarea>
+                            </div>
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">ID Code</span>
+                                <input type="text" class="form-control" id="healthCodePath" name="healthCodePath"
+                                       placeholder="ID code upload path"
+                                       aria-describedby="basic-addon1" readonly>
+                            </div>
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">Access Credential</span>
+                                <input type="text" class="form-control" id="travelCodePath" name="travelCodePath"
+                                       placeholder="Access credential upload path"
+                                       aria-describedby="basic-addon1" readonly>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                                    <div class="layui-upload">
+                                        <button type="button" class="layui-btn" id="test1">Upload ID Code</button>
+                                        <div class="layui-upload-list">
+                                            <img class="layui-upload-img code-img" id="demo1">
+                                            <p id="demoText"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                                    <div class="layui-upload">
+                                        <button type="button" class="layui-btn" id="test2">Upload Access Credential</button>
+                                        <div class="layui-upload-list">
+                                            <img class="layui-upload-img code-img" id="demo2">
+                                            <p id="demoText2"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button id="accessBtn" type="button" class="btn btn-primary"
+                                        style="position:absolute; right: 0px">
+                                    Submit Information
+                                </button>
+                                <button id="toAccessPage" type="button" class="btn btn-primary"
+                                        style="position:absolute; right: 95px">
+                                    My Registration Records
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Complaints -->
+<div id="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="about-text">
+                    <h2 style="font-size: 30px">Complaints</h2>
+                    <div class="col-lg-12 col-sm-12 col-xs-12" style="padding-left: 0;">
+                        <form role="form" style="position: relative; top: 0">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">Your Name</span>
+                                <input type="text" class="form-control" name="complaintUserName" placeholder="Enter your name"
+                                       aria-describedby="basic-addon1"
+                                       th:value="${session.webUser != null ? session.webUser.userName : ''}">
+                            </div>
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">Contact Number</span>
+                                <input type="text" class="form-control" name="complaintPhone" placeholder="Enter your contact number"
+                                       aria-describedby="basic-addon1"
+                                       th:value="${session.webUser != null ? session.webUser.phone : ''}">
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="5" name="complaintInfo" placeholder="Please describe your complaint"
+                                          style="resize: none"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button id="complaintBtn" type="button" class="btn btn-primary"
+                                        style="position:absolute; right: 0px">
+                                    Submit Information
+                                </button>
+                                <button id="toComplaint" type="button" class="btn btn-primary"
+                                        style="position:absolute; right: 95px">
+                                    My Complaints
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <img th:src="@{/webStatic/img/new_index.jpg}" class="img-responsive" alt="" width="585" height="350">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Repair Services -->
+<div id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <img th:src="@{/webStatic/img/portfolio/01-large.jpg}" class="img-responsive" alt="" width="585"
+                     height="350">
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <div class="about-text">
+                    <h2 style="font-size: 30px">Repair Services</h2>
+                    <div class="col-lg-12 col-sm-12 col-xs-12" style="padding-left: 0;">
+                        <form role="form" style="position: relative; top: 0">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">Your Name</span>
+                                <input type="text" class="form-control" name="repairUserName" placeholder="Enter your name"
+                                       aria-describedby="basic-addon1"
+                                       th
+
+                                       :value="${session.webUser != null ? session.webUser.userName : ''}">
+                            </div>
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">Contact Number</span>
+                                <input type="text" class="form-control" name="repairPhone" placeholder="Enter your contact number"
+                                       aria-describedby="basic-addon1"
+                                       th:value="${session.webUser != null ? session.webUser.phone : ''}">
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="5" name="repairInfo" placeholder="Please describe the issue in detail"
+                                          style="resize: none"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button id="repairBtn" type="button" class="btn btn-primary"
+                                        style="position:absolute; right: 0px">
+                                    Submit Information
+                                </button>
+                                <button id="toRepair" type="button" class="btn btn-primary"
+                                        style="position:absolute; right: 95px">
+                                    My Repair Requests
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Us -->
+<div id="testimonials">
+    <div class="container">
+        <div class="section-title">
+            <h2>About Us</h2>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <img th:src="@{/webStatic/img/portfolio/06-large.jpg}" class="img-responsive" alt="" width="585"
+                     height="350">
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <div class="about-text">
+                    <h2 style="font-size: 28px">XX Apartment</h2>
+                    <div class="col-lg-12 col-sm-12 col-xs-12" style="padding-left: 0;text-indent: 2em">
+                        The XX Apartment complex offers an elegant and tranquil environment with abundant greenery. Through well-organized community roads and thoughtfully arranged recreational facilities, it provides a natural and comfortable living environment.
+                        The surrounding amenities are comprehensive, facilities are complete, and property management is well-maintained with 24-hour security. The residents are of high quality, and the community is vibrant and healthy with a harmonious neighborhood atmosphere.
+                        The infrastructure is well-developed, with many nearby shopping districts offering convenient access to shopping, medical care, and entertainment.
+                        XX Apartment is a high-end, personalized residential community that integrates an ecological environment, cultural environment, information technology, and automated management control.
+                        The beautiful surroundings and scenic views offer a living experience that feels like a return to family and private life. The building floors are evenly distributed, the interior decoration is luxurious and grand, offering a wide and well-lit space.
+                        With a north-south orientation, the overall design reflects a modern minimalist style with clear lines and a bold, simple color palette. The architectural height is tiered, with higher buildings in the center and lower ones on the east and west, creating a strong sense of rhythm.
+                        Living here offers the convenience of city life while enjoying the tranquility away from the hustle and bustle, allowing you to fully control your life and embrace the future.
+                        <br/><br/><br/>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div id="footer" style="background: #FFF">
+    <div class="container text-center">
+        <p>Copyright &copy; 2024. Xin All rights reserved.</p>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/webStatic/js/jquery.1.11.1.js}" src="js/jquery.1.11.1.js"></script>
+<script type="text/javascript" th:src="@{/webStatic/js/bootstrap.js}" src="js/bootstrap.js"></script>
+<script type="text/javascript" th:src="@{/webStatic/js/SmoothScroll.js}" src="js/SmoothScroll.js"></script>
+<script type="text/javascript" th:src="@{/webStatic/js/nivo-lightbox.js}" src="js/nivo-lightbox.js"></script>
+<script type="text/javascript" th:src="@{/webStatic/js/jqBootstrapValidation.js}"
+        src="js/jqBootstrapValidation.js"></script>
+<script type="text/javascript" th:src="@{/webStatic/js/contact_me.js}" src="js/contact_me.js"></script>
+<script type="text/javascript" th:src="@{/webStatic/js/main.js}" src="js/main.js"></script>
+<script type="text/javascript" th:src="@{/webStatic/layui/layui.js}" src="js/main.js"></script>
+<script type="text/javascript" th:src="@{/webStatic/js/myIndex.js}" src="js/main.js"></script>
+<script type="text/javascript" th:src="@{/adminStatic/js/MyLayuiUtils.js}" src="js/main.js"></script>
+</body>
+</html>

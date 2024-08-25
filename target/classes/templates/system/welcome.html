@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome Page - X-admin2.2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="../../static/adminStatic/css/font.css" th:href="@{/adminStatic/css/font.css}">
+    <link rel="stylesheet" href="../../static/adminStatic/css/xadmin.css" th:href="@{/adminStatic/css/xadmin.css}">
+    <script th:src="@{/webjars/layui/2.5.6/layui.js}" src="" type="text/javascript"></script>
+    <script th:src="@{/webjars/jquery/3.5.1/jquery.js}" src="" type="text/javascript"></script>
+    <script type="text/javascript" src="../../static/adminStatic/js/xadmin.js" th:src="@{/adminStatic/js/xadmin.js}"></script>
+    <!-- Enable media queries for IE8/9 support -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <blockquote class="layui-elem-quote">Welcome:
+                        <span class="x-red" th:text="${session.loginAdmin != null ? session.loginAdmin.getLoginName() : 'admin'}">test</span>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">System Information</div>
+                <div class="layui-card-body ">
+                    <table class="layui-table">
+                        <tbody>
+                        <tr>
+                            <th>System Name</th>
+                            <td>Property Management System</td>
+                        </tr>
+                        <tr>
+                            <th>System Version</th>
+                            <td>1.0.0</td>
+                        </tr>
+                        <tr>
+                            <th>Server Address</th>
+                            <td>localhost:2281/admin</td>
+                        </tr>
+                        <tr>
+                            <th>Operating System</th>
+                            <td>Windows</td>
+                        </tr>
+                        <tr>
+                            <th>Runtime Environment</th>
+                            <td>Tomcat 8.5</td>
+                        </tr>
+                        <tr>
+                            <th>Java Version</th>
+                            <td>1.8</td>
+                        </tr>
+                        <tr>
+                            <th>Database</th>
+                            <td>MySQL</td>
+                        </tr>
+                        <tr>
+                            <th>MySQL Version</th>
+                            <td>8.0</td>
+                        </tr>
+                        <tr>
+                            <th>Development Tool</th>
+                            <td>IntelliJ IDEA 2019</td>
+                        </tr>
+                        <tr>
+                            <th>Backend Framework</th>
+                            <td>SpringBoot</td>
+                        </tr>
+                        <tr>
+                            <th>SpringBoot Version</th>
+                            <td>2.2.9</td>
+                        </tr>
+                        <tr>
+                            <th>Layui Version</th>
+                            <td>2.5.6</td>
+                        </tr>
+                        <tr>
+                            <th>jQuery Version</th>
+                            <td>3.5.1</td>
+                        </tr>
+                        <tr>
+                            <th>X-admin Version</th>
+                            <td>2.2.0</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">&copy; 2022. Xin Thanks to the above technology companies for their support!</th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

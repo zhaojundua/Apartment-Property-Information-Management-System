@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New</title>
+    <link rel="stylesheet" th:href="@{/static/adminStatic/layui/css/layui.css}">
+    <!-- Import external icon library -->
+    <link rel="stylesheet" th:href="@{/adminStatic/layui/myicons/iconfont.css}">
+    <script th:src="@{/webjars/layui/2.5.6/layui.js}" src="" type="text/javascript"></script>
+    <script th:src="@{/webjars/jquery/3.5.1/jquery.js}" src="" type="text/javascript"></script>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        .layui-form-pane .layui-form-text .layui-textarea {
+            min-height: 80px;
+            max-height: 80px;
+        }
+
+        .div_show {
+            transform: translate(-2000px);
+            transition: all 0.8s;
+        }
+
+        .div_hide {
+            transform: translate(2000px);
+            transition: all 1.5s;
+        }
+
+        .photo-viewer {
+            margin: 50px 0;
+            text-align: center;
+        }
+
+        .img-reveal {
+            display: inline-block;
+            margin: 0px 8px;
+        }
+
+        .layui-btn {
+            height: 34px;
+            line-height: 34px;
+        }
+        .layui-form-select dl {
+            max-height: 195px;
+        }
+    </style>
+</head>
+<body style="height: 100%;box-sizing: border-box">
+<div class="layui-upload" style="padding: 15px;">
+    <button type="button" class="layui-btn layui-btn-normal" id="selectImgBtn">Select Images to Upload</button>
+    <div class="layui-upload-list">
+        <table class="layui-table">
+            <thead>
+            <tr><th>Filename</th>
+                <th>Size</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr></thead>
+            <tbody id="showFileTable"></tbody>
+        </table>
+    </div>
+    <button type="button" class="layui-btn" id="startUpload">Start Upload</button>
+</div>
+<script>
+    layui.use(['form', 'upload', 'table'], function () {
+
+        var upload = layui.upload;
+
+        // Multiple file list example
+        var showFileTable = $('#showFileTable');
+
+        var uploadListIns = upload.render({
+            elem: '#selectImgBtn'
+            ,url: 'toUploadServer' // Change to your own upload interface
+            ,accept: 'jpg|png'
+            ,multiple: true
+            ,auto: false
+            ,bindAction: '#startUpload' // Bind start upload button
+            ,choose: function(obj){
+                var files = this.files = obj.pushFile(); // Add selected files to the file queue
+                // Read local files
+                obj.preview(function(index, file, result){
+                    var tr = $(['<tr id="upload-'+ index +'">'
+                        ,'<td>'+ file.name +'</td>'
+                        ,'<td>'+ (file.size/1024).toFixed(1) +'kb</td>'
+                        ,'<td>Waiting to Upload</td>'
+                        ,'<td>'
+                        ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">Retry</button>'
+                        ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">Delete</button>'
+                        ,'</td>'
+                        ,'</tr>'].join(''));
+
+                    // Single retry
+                    tr.find('.demo-reload').on('click', function(){
+                        obj.upload(index, file);
+                    });
+
+                    // Delete
+                    tr.find('.demo-delete').on('click', function(){
+                        delete files[index]; // Delete the corresponding file
+                        tr.remove();
+                        uploadListIns.config.elem.next()[0].value = ''; // Clear input file value to avoid the same file name not being selectable after deletion
+                    });
+
+                    showFileTable.append(tr);
+                });
+            }
+            ,before: function(obj) {
+                layer.load();
+            }
+            ,done: function(res, index, upload){
+                if(res.code == "200"){ // Upload successful
+                    var tr = showFileTable.find('tr#upload-'+ index)
+                        ,tds = tr.children();
+                    tds.eq(2).html('<span style="color: #5FB878;">Upload Successful</span>');
+                    tds.eq(3).html(''); // Clear actions
+                    layer.closeAll('loading');
+                    return delete this.files[index]; // Remove successfully uploaded files from the file queue
+                }
+                this.error(index, upload);
+            }
+            ,error: function(index, upload){
+                var tr = showFileTable.find('tr#upload-'+ index)
+                    ,tds = tr.children();
+                tds.eq(2).html('<span style="color: #FF5722;">Upload Failed</span>');
+                tds.eq(3).find('.demo-reload').removeClass('layui-hide'); // Show retry
+                layer.closeAll('loading');
+            }
+        });
+    });
+</script>
+</body>
+</html>
