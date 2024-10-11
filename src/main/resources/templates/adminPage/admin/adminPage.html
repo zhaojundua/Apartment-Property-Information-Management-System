@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>欢迎页面-X-admin2.2</title>
+    <title>Welcome Page - X-admin2.2</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
@@ -53,12 +53,12 @@
 </body>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm iconfont layui-btn-normal" lay-event="add">&#xe6b9; 添加</button>
+        <button class="layui-btn layui-btn-sm iconfont layui-btn-normal" lay-event="add">&#xe6b9; Add</button>
     </div>
 </script>
 
 <script id="operationBar" type="text/html">
-    <button class="layui-btn layui-btn-sm iconfont layui-btn-danger" lay-event="del">&#xe69d; 删除</button>
+    <button class="layui-btn layui-btn-sm iconfont layui-btn-danger" lay-event="del">&#xe69d; Delete</button>
 </script>
 
 <script>
@@ -72,79 +72,78 @@
 
             var page, limit, totalCount;
 
-            // 开始日期选择
+            // Start date selection
             laydate.render({
                 elem: '#start'
                 , type: 'date'
             });
 
-            // 结束日期选择
+            // End date selection
             laydate.render({
                 elem: '#end'
                 , type: 'date'
             });
 
-            // 初始调用表格加载方法
+            // Initial call to load the table
             loadFunction("getDataByPage");
 
             /**
-             * 绑定查询按钮
+             * Bind search button
              */
             $("#searchBtn").click(function() {
-                // 获取表单数据
+                // Get form data
                 var sendData = $("#form").serialize();
-                // 重新调用表格加载方法
+                // Reload the table with the new data
                 loadFunction("getDataByPage?" + sendData)
             })
 
             /**
-             * 加载表格方法
+             * Table loading function
              * @param url
              */
             function loadFunction(url) {
-                //第一个实例
+                // First instance
                 table.render({
                     elem: '#listInfo'
                     , height: 'full-115'
-                    , url: url //数据接口
+                    , url: url // Data interface
                     , defaultToolbar: ['filter']
                     , loading: true
                     , limit: 20
                     , toolbar: '#toolbarDemo'
                     , cellMinWidth: 270
                     , page: {
-                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip', 'refresh'] //自定义分页布局
-                        ,groups: 5 //只显示 5 个连续页码
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip', 'refresh'] // Custom pagination layout
+                        ,groups: 5 // Display only 5 continuous pages
                         ,theme: '#1E9FFF'
                     }
                     , cols:
                         [
-                            [ //表头
-                                { type: 'numbers', title: '序号', width: 60  }
-                                , {field: 'id', title: '主键标识', width: 120, hide: true}
-                                , {field: 'userName', title: '用户名'}
-                                , {field: 'loginName', title: '登录名'}
-                                , {field: 'caozuo', title: '操作', toolbar:'#operationBar'}
+                            [ // Table headers
+                                { type: 'numbers', title: 'No.', width: 60  }
+                                , {field: 'id', title: 'Primary Key', width: 120, hide: true}
+                                , {field: 'userName', title: 'Username'}
+                                , {field: 'loginName', title: 'Login Name'}
+                                , {field: 'caozuo', title: 'Actions', toolbar:'#operationBar'}
                             ]
                         ]
                 })
             }
 
-            //头工具栏事件
+            // Toolbar events
             table.on('toolbar(listInfo)', function (obj) {
                 switch (obj.event) {
                     case 'add':
-                        toWindow("toAddWindow", "新增管理员", "400px", "330px");
+                        toWindow("toAddWindow", "Add Administrator", "400px", "330px");
                         break;
                 }
             });
 
-            //行内工具条
+            // Inline toolbar
             table.on('tool(listInfo)', function(obj){
                 switch(obj.event){
-                    //自定义头工具栏右侧图标 - 提示
                     case 'del':
-                        // 删除重要信息
+                        // Delete important information
                         deleteInfo(1, obj.data.id, "deleteInfo?id=" + obj.data.id);
                         break;
                 }

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>新增</title>
+    <title>Add New</title>
     <link rel="stylesheet" th:href="@{/adminStatic/layui/css/layui.css}">
     <script th:src="@{/webjars/layui/2.5.6/layui.js}" src="" type="text/javascript"></script>
     <script th:src="@{/webjars/jquery/3.5.1/jquery.js}" src="" type="text/javascript"></script>
@@ -48,38 +48,38 @@
 </head>
 <body style="height: 100%;padding: 15px;box-sizing: border-box">
 
-<!--表单-->
+<!--Form-->
 <form class="layui-form layui-form-pane form-info addForm" action="" th:add-url="${addUrl}">
     <div id="product_info" style="width:100%">
 
         <div class="layui-form-item">
-            <label class="layui-form-label">用户名</label>
+            <label class="layui-form-label">Username</label>
             <div class="layui-input-inline">
-                <input type="text" name="userName" lay-verify="required" placeholder="请填写用户名 (必填)" autocomplete="off"
+                <input type="text" name="userName" lay-verify="required" placeholder="Please enter the username (required)" autocomplete="off"
                        class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">真实姓名</label>
+            <label class="layui-form-label">Full Name</label>
             <div class="layui-input-inline">
-                <input type="text" name="loginName" lay-verify="required" placeholder="请填写真实姓名 (必填)" autocomplete="off"
+                <input type="text" name="loginName" lay-verify="required" placeholder="Please enter the full name (required)" autocomplete="off"
                        class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">密码</label>
+            <label class="layui-form-label">Password</label>
             <div class="layui-input-inline">
-                <input type="password" name="password" lay-verify="required" placeholder="请填写密码 (必填)" autocomplete="off"
+                <input type="password" name="password" lay-verify="required" placeholder="Please enter the password (required)" autocomplete="off"
                        class="layui-input" readonly>
             </div>
         </div>
     </div>
-    
+
     <div class="content-input" style="position: absolute; left: 15px; bottom: 15px;">
-        <input type="button" value="提交" name="submit" class="layui-btn addBtn layui-btn-normal">
-        <input type="reset" class="layui-btn layui-btn-normal" value="清空">
+        <input type="button" value="Submit" name="submit" class="layui-btn addBtn layui-btn-normal">
+        <input type="reset" class="layui-btn layui-btn-normal" value="Clear">
     </div>
 </form>
 
@@ -92,10 +92,10 @@
         var lock = true;
 
         /**
-         * 绑定回车事件
+         * Bind enter key event
          */
         $(document).keypress(function (e) {
-            //如果当前有类似layer.alert的窗体，点击最上层的确定按钮，并且取消所有焦点
+            //If there is a layer.alert window, click the confirm button and blur all focus
             if ($('.layui-layer-btn0').length > 0) {
                 $('.layui-layer-btn0').eq($('.layui-layer-btn0').length - 1)[0].click();
                 $("*").blur();
@@ -108,27 +108,27 @@
         })
 
         /**
-         * 单击提交事件
+         * Click submit event
          */
         $(".addBtn").click(function () {
-            if (lock) {      //判断是否重复提交
+            if (lock) {      // Check for repeated submissions
                 lock = true;
-                //验证数据
+                // Validate data
                 var flag = isVerifyDate();
-                // 如果flag不为空就是验证不通过
+                // If flag is not empty, validation failed
                 if(flag) {
                     layer.confirm(flag, {
-                        btn: ['确定']  //按钮
+                        btn: ['OK']  //Button
                         , icon: 5
                         , anim: 6
                     });
                     return;
                 }
-                //获取表单数据
+                // Get form data
                 var addData = $(".addForm").serializeArray();
-                //获取提交的url
+                // Get submission URL
                 var url = $(".addForm").attr("add-url");
-                // 将数据转换为对象, 注意发送时将对象转为JSON字符串
+                // Convert data to object, remember to send the data as a JSON string
                 var jsonObj={};
                 $(addData).each(function(){
                     jsonObj[this.name]=this.value;
@@ -137,19 +137,19 @@
                     url: url,
                     type: 'POST',
                     async: false,
-                    contentType : 'application/json;charset=utf-8', //设置请求头信息
+                    contentType : 'application/json;charset=utf-8', // Set request header
                     data: JSON.stringify(jsonObj),
                     success: function(rollData) {
                         if (rollData.code == "0") {
                             layer.confirm(rollData.msg, {
-                                btn: ['确定']  //按钮
+                                btn: ['OK']  //Button
                                 , icon: 6
                             }, function () {
-                                window.parent.location.reload();    //刷新父页面
+                                window.parent.location.reload();    // Refresh parent page
                             });
                         } else {
                             layer.confirm(rollData.msg, {
-                                btn: ['确定']  //按钮
+                                btn: ['OK']  //Button
                                 , icon: 5
                                 , anim: 6
                             }, function (index) {
@@ -159,8 +159,8 @@
                         }
                     },
                     error: function(res) {
-                        layer.confirm('啊哦！访问出问题了！请联系管理员！', {
-                            btn: ['确定']  //按钮
+                        layer.confirm('Oops! Something went wrong! Please contact the administrator!', {
+                            btn: ['OK']  //Button
                             , icon: 5
                             , anim: 6
                         }, function (index) {
@@ -173,19 +173,19 @@
         });
 
         /**
-         * 验证数据方法
+         * Data validation method
          */
         function isVerifyDate() {
-            // 获取所有数据
+            // Get all data
             var userName = $("input[name='userName']").val();
             var loginName = $("input[name='loginName']").val();
             var password = $("input[name='password']").val();
-            // 正整数正则
+            // Positive integer regex
             var reNumber = /^[0-9]+$/;
             var reFloat = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
-            // 非空验证
+            // Non-empty validation
             if(!userName || !loginName || !password) {
-                return "请认真点, 将所有必填数据填写完整! ";
+                return "Please be careful, fill in all required fields!";
             }
         }
     });

@@ -1,277 +1,179 @@
 <!DOCTYPE html>
-<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>欢迎页面-X-admin2.2</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport"
-          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
-    <link rel="stylesheet" href="../../../static/adminStatic/css/font.css" th:href="@{/adminStatic/css/font.css}">
-    <link rel="stylesheet" href="../../../static/adminStatic/css/xadmin.css" th:href="@{/adminStatic/css/xadmin.css}">
+    <title>Add New</title>
+    <link rel="stylesheet" th:href="@{/adminStatic/layui/css/layui.css}">
     <script th:src="@{/webjars/layui/2.5.6/layui.js}" src="" type="text/javascript"></script>
     <script th:src="@{/webjars/jquery/3.5.1/jquery.js}" src="" type="text/javascript"></script>
-    <script type="text/javascript" src="../../../static/adminStatic/js/xadmin.js"
-            th:src="@{/adminStatic/js/xadmin.js}"></script>
-    <script type="text/javascript" src="../../../static/adminStatic/js/xadmin.js"
-            th:src="@{/adminStatic/js/MyLayuiUtils.js}"></script>
-    <script type="text/javascript" src="../../../static/adminStatic/js/echarts.min.js"
-            th:src="@{/adminStatic/js/echarts.min.js}"></script>
-    <!--[if lt IE 9]>
-    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
     <style>
-        .layui-form-item {
-            margin-bottom: 0;
+        html {
+            height: 100%;
         }
 
-        .layui-form-pane .layui-form-label {
-            max-width: 100px;
+        .layui-form-pane .layui-form-text .layui-textarea {
+            min-height: 80px;
+            max-height: 80px;
         }
 
-        .layui-form-item .layui-input-inline .layui-form-select {
-            width: 180px;
+        .div_show {
+            transform: translate(-2000px);
+            transition: all 0.8s;
         }
 
-        .layui-form-pane .layui-form-label {
-            padding: 9px 15px;
+        .div_hide {
+            transform: translate(2000px);
+            transition: all 1.5s;
+        }
+
+        .photo-viewer {
+            margin: 50px 0;
+            text-align: center;
+        }
+
+        .img-reveal {
+            display: inline-block;
+            margin: 0px 8px;
+        }
+
+        .layui-btn {
+            height: 34px;
+            line-height: 34px;
+        }
+
+        .layui-form-select dl {
+            max-height: 195px;
         }
     </style>
 </head>
+<body style="height: 100%;padding: 15px;box-sizing: border-box">
 
-<body>
-<div class="layui-fluid">
-    <div class="layui-row layui-col-space15">
-        <div class="layui-col-md12">
-            <div class="layui-card">
-                <div class="layui-card-body " style="padding-bottom: 0;">
-                    <form class="layui-form layui-col-space5 layui-form-pane" id="form2">
-                        <div class="layui-inline layui-show-xs-block">
-                            <button class="layui-btn layui-btn-normal" id="searchBtn2" type="button"
-                                    lay-filter="search">
-                                <i class="layui-icon">&#xe615;</i>
-                            </button>
-                            <input class="layui-btn layui-btn-normal layui-icon" type="reset" value="&#xe669;"/>
-                        </div>
-                    </form>
-                </div>
-                <div class="layui-card-body ">
-                    <div id="mission_progress" style="background-color:#ffffff;min-height:500px;"></div>
-                    <div id="mission_progress2" style="background-color:#ffffff;min-height:500px;"></div>
-                </div>
+<!-- Form -->
+<form class="layui-form layui-form-pane form-info addForm" action="" th:add-url="${addUrl}">
+    <div id="product_info" style="width:100%">
+        <!-- Parking Type -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">Parking Type</label>
+            <div class="layui-input-inline" lay-verify="required">
+                <select name="carParkType" id="carParkType" lay-verify="required" lay-search>
+                    <option value="">Please select a parking type (required)</option>
+                    <option value="Underground Parking">Underground Parking</option>
+                    <option value="Surface Parking">Surface Parking</option>
+                </select>
+            </div>
+        </div>
+        <!-- Parking Information -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">Parking Information</label>
+            <div class="layui-input-inline" lay-verify="required">
+                <input class="layui-input" autocomplete="off" lay-verify="required" placeholder="Please enter parking information"
+                       name="carParkInfo">
             </div>
         </div>
     </div>
-</div>
-</body>
+
+    <div class="content-input" style="position: absolute; left: 15px; bottom: 15px;">
+        <input type="button" value="Submit" name="submit" class="layui-btn addBtn layui-btn-normal">
+        <input type="reset" class="layui-btn layui-btn-normal" value="Clear">
+    </div>
+</form>
+
 
 <script>
-    layui.use(['table', 'form', 'upload', 'laydate'], function () {
-        var table = layui.table,
-            layer = layui.layer,
-            form = layui.form,
-            upload = layui.upload,
-            laydate = layui.laydate;
+    layui.use(['form', 'upload', 'laydate'], function () {
+        var layer = layui.layer;
 
-        // 图标实例1
-        let missionProgressChart = echarts.init(document.getElementById('mission_progress'));
-        let missionProgressChart2 = echarts.init(document.getElementById('mission_progress2'));
-        // 配置项
-        let missionProgressOption = {
-            title: {
-                text: '车位收费月度统计',
-                textStyle: {
-                    color: '#235894'
-                }
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    crossStyle: {
-                        color: '#999'
-                    }
-                }
-            },
-            toolbox: {
-                feature: {
-                    dataView: {show: true, readOnly: false},
-                    magicType: {show: true, type: ['line', 'bar']},
-                    restore: {show: true},
-                    saveAsImage: {show: true}
-                }
-            },
-            legend: {
-                data: ['地下停车位', '地面停车位', '均值']
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    data: [],
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                }
-            ],
-            yAxis: {
-                type: 'value',
-                minInterval: 0.01,
-                axisLabel: {
-                    formatter: '￥ {value}'
-                }
-            },
-            series: [
-                {
-                    name: '地下停车位',
-                    type: 'bar',
-                    tooltip: {
-                        valueFormatter: function (value) {
-                            return '￥ ' + value;
-                        }
-                    },
-                    data: []
-                },
-                {
-                    name: '地面停车位',
-                    type: 'bar',
-                    tooltip: {
-                        valueFormatter: function (value) {
-                            return '￥ ' + value;
-                        }
-                    },
-                    data: []
-                },
-                {
-                    name: '均值',
-                    type: 'line',
-                    tooltip: {
-                        valueFormatter: function (value) {
-                            return '￥ ' + value;
-                        }
-                    },
-                    data: []
-                }
-            ]
-        };
-        let missionProgressOption2 = {
-            title: {
-                text: '物业收费月度统计',
-                textStyle: {
-                    color: '#235894'
-                }
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    crossStyle: {
-                        color: '#999'
-                    }
-                }
-            },
-            toolbox: {
-                feature: {
-                    dataView: {show: true, readOnly: false},
-                    magicType: {show: true, type: ['line', 'bar']},
-                    restore: {show: true},
-                    saveAsImage: {show: true}
-                }
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    data: [],
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                }
-            ],
-            yAxis: {
-                type: 'value',
-                minInterval: 0.01,
-                axisLabel: {
-                    formatter: '￥ {value}'
-                }
-            },
-            series: [
-                {
-                    type: 'bar',
-                    tooltip: {
-                        valueFormatter: function (value) {
-                            return '￥ ' + value;
-                        }
-                    },
-                    data: []
-                }
-            ]
-        };
-
-        // 初始化图表渲染
-        loadFunction2("charge/analysis/");
+        var lock = true;
 
         /**
-         * 绑定查询按钮
+         * Bind enter key event
          */
-        $("#searchBtn2").click(function () {
-            // 获取表单数据
-            var sendData = $("#form2").serialize();
-            // 重新调用表格加载方法
-            loadFunction2("charge/analysis/")
-        })
+        $(document).keypress(function (e) {
+            // If there is a layer.alert window, click the confirm button and blur all focus
+            if ($('.layui-layer-btn0').length > 0) {
+                $('.layui-layer-btn0').eq($('.layui-layer-btn0').length - 1)[0].click();
+                $("*").blur();
+            }
+        });
 
         /**
-         * 加载图表渲染
-         * @param url
+         * Click submit event
          */
-        function loadFunction2(url) {
-            let loading = layer.load();
-            $.ajax({
-                url: url,
-                dataType: 'json',
-                type: 'get',
-                success: function (result) {
-                    layer.close(loading);
-                    if (result.code == "0") {
-                        missionProgressOption.xAxis[0].data = result.data['chart1']['timeX'];
-                        missionProgressOption.series[0].data = result.data['chart1']['costY1'];
-                        missionProgressOption.series[1].data = result.data['chart1']["costY2"];
-                        missionProgressOption.series[2].data = result.data['chart1']["costAvg"];
-
-                        missionProgressOption2.xAxis[0].data = result.data['chart2']['timeX'];
-                        missionProgressOption2.series[0].data = result.data['chart2']['costY1'];
-
-                    } else {
-                        missionProgressOption.xAxis[0].data = [];
-                        missionProgressOption.series[0].data = [];
-                        missionProgressOption.series[1].data = [];
-                        missionProgressOption.series[2].data = [];
-
-                        missionProgressOption2.xAxis[0].data = [];
-                        missionProgressOption2.series[0].data = [];
-
-                        layer.confirm('暂无数据可分析！', {
-                            btn: ['确定']  //按钮
+        $(".addBtn").click(function () {
+            if (lock) {      // Check for repeated submissions
+                lock = true;
+                // Validate data
+                var flag = isVerifyDate();
+                // If flag is not empty, validation failed
+                if (flag) {
+                    layer.confirm(flag, {
+                        btn: ['OK']  // Button
+                        , icon: 5
+                        , anim: 6
+                    });
+                    return;
+                }
+                // Get form data
+                var addData = $(".addForm").serializeArray();
+                // Get submission URL
+                var url = $(".addForm").attr("add-url");
+                // Convert data to object, remember to send the data as a JSON string
+                var jsonObj = {};
+                $(addData).each(function () {
+                    jsonObj[this.name] = this.value;
+                });
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    async: false,
+                    contentType: 'application/json;charset=utf-8', // Set request header
+                    data: JSON.stringify(jsonObj),
+                    success: function (rollData) {
+                        if (rollData.code == "0") {
+                            layer.confirm(rollData.msg, {
+                                btn: ['OK']  // Button
+                                , icon: 6
+                            }, function () {
+                                window.parent.location.reload();    // Refresh parent page
+                            });
+                        } else {
+                            layer.confirm(rollData.msg, {
+                                btn: ['OK']  // Button
+                                , icon: 5
+                                , anim: 6
+                            }, function (index) {
+                                lock = true;
+                                layer.close(index);
+                            });
+                        }
+                    },
+                    error: function (res) {
+                        layer.confirm('Oops! Something went wrong! Please contact the developer!', {
+                            btn: ['OK']  // Button
                             , icon: 5
                             , anim: 6
                         }, function (index) {
+                            lock = true;
                             layer.close(index);
                         });
                     }
-
-                    // 渲染
-                    missionProgressChart.setOption(missionProgressOption);
-                    missionProgressChart2.setOption(missionProgressOption2);
-                }
-            })
-        }
-
-        // 图表 size 自适应
-        window.addEventListener("resize", function () {
-            missionProgressChart.resize();
-            missionProgressChart2.resize();
+                })
+            }
         });
+
+        /**
+         * Data validation method
+         */
+        function isVerifyDate() {
+            // Get all data
+            var carParkType = $("select[name='carParkType']").val();
+            var carParkInfo = $("input[name='carParkInfo']").val();
+            // Non-empty validation
+            if (!carParkType || !carParkInfo) {
+                return "Please ensure all required fields are filled!";
+            }
+        }
     });
 </script>
+</body>
 </html>
