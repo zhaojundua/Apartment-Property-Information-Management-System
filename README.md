@@ -1,61 +1,61 @@
-# 访问地址
+ Project Features
+1. Utilizes mainstream technologies and architectural patterns (Controller, Service, Data layers).
+2. Clear code structure, adhering to modularity, componentization, and interface principles; key code sections are well-documented and beginner-friendly for learning or further development.
+3. A comprehensive property management system with both frontend and backend features.
+4. Frontend built using the Layui framework, offering complete components and ease of use.
+5. Integrated with Python sentiment analysis service, which analyzes subjective user feedback, assigning scores and labels (Good, Average, Poor).
+Technology Stack
+- Java backend providing RESTful API and Thymeleaf template rendering; frontend built using Layui, with frontend-backend communication via AJAX in JSON format.
+- Backend: SpringBoot + Thymeleaf + MyBatis + Python
+- Build tool: Maven
+- JVM version: JDK8
+- Frontend: Layui
+Access URLs
+Homepage
+(http://localhost:2281/housing/)
+Portal Website
+(http://localhost:2281/housing/index)
+Admin Dashboard
+(http://localhost:2281/housing/main.html)
+Admin Login Page
+(http://localhost:2281/housing/system/toLoginPage)
 
-### 首页
-- [http://localhost:2281/housing/](http://localhost:2281/housing/)
-
-### 门户网站
-- [http://localhost:2281/housing/index](http://localhost:2281/housing/index)
-
-### 后台管理页
-- [http://localhost:2281/housing/main.html](http://localhost:2281/housing/main.html)
-
-### 后台管理登录页
-- [http://localhost:2281/housing/system/toLoginPage](http://localhost:2281/housing/system/toLoginPage)
-
-### Python 服务默认地址端口
+Python Service Default Address and Port
 - 127.0.0.1:8089
 
+Account Credentials
+Admin
+Username: admin
+Password: 123456
 
-# 账号密码
+Resident
+Username: Smith
+Password: 1234
 
-- 管理员
-```yaml
-账号: admin
-密码: 123456
-```
+> All resident passwords default to 1234.
 
-- 住户
-```yaml
-账号: 李四
-密码: 1234
-```
+Backend Features
 
-> 所有住户密码默认 1234
+1. Basic functions: login, logout.
+2. Resident management: add, delete, update, and view resident information.
+3. Building management: manage basic building information.
+4. Housing management: add housing details (building, type, unit number, area), mark for sale (bind to owner), or for rent (bind to resident).
+5. Parking management: add, delete, update, and view parking information.
+6. Staff management: manage staff (responsible for handling complaints, repair requests, etc.).
+7. Property fee management -> Fee project management: manage fee items (name, price, description).
+8. Property fee management -> Meter reading: generate invoices based on fee items for each house; residents can view and pay pending fees on the frontend.
+9. Property fee management -> Payment record query: view payment history.
+10. Parking fee management: generate parking fee invoices for residents based on assigned parking spaces; residents can view and pay parking fees on the frontend.
+11. Statistics and analysis: monthly parking fee and property fee statistics.
+12. Announcement management: admin posts announcements, residents can view on the frontend.
+13. Announcement comment management: residents can comment on announcements; Python sentiment analysis is supported to generate sentiment scores, emotion levels, and statistical charts.
+14. Complaint management: residents can submit complaints, and staff can handle and respond; Python sentiment analysis is supported for complaint content.
+15. Repair request management: residents can submit repair requests, and staff can handle and respond; Python sentiment analysis is supported for repair request content.
 
-
-# 后台功能说明
-
-1. 登录、登出、注册等基本功能。
-2. 住户管理；增删改查住户基本信息。
-3. 楼宇管理；管理楼栋基本的信息。
-4. 房屋管理；新增房屋基本信息【楼宇信息、房型、房号、占地面积等】；可选择出售（绑定户主信息）；户主可选择出租（绑定住户信息）。
-5. 车位管理；增删改查车位信息。
-6. 员工管理；增删改查员工基本信息（员工主要负责处理投诉、报修等事件单）。
-7. 物业收费管理 -> 收费项目管理；增删改查收费项目（名称、单价、描述）。
-8. 物业收费管理 -> 抄表管理；根据收费项目对每个房屋进行收费，生成订单；绑定的住户可在前台查看待缴费用单，并进行缴费操作。
-9. 物业收费管理 -> 缴费记录查询；查看缴费历史等信息。
-10. 车位收费管理；按住户进行收费，绑定车位信息，生成收费单；绑定的住户可在前台查看并进行缴费。
-11. 统计分析；含车位收费月度统计、物业收费月度统计。
-12. 公告管理；管理员在后台发布公告信息，住户在前台发布公告。
-13. 公告评论管理；用户可在前台看到公告信息，并在评论区留言；后台可对评论内容执行【Python情感分析】，生成情感分数、情绪等级、统计图表。
-14. 投诉信息管理；用户可在前台发布投诉留言，员工可在后台处理反馈；支持对投诉内容执行【Python情感分析】。
-15. 保修信息管理；用户可在前台发起报修单，员工可在后台处理并反馈；支持对报修信息内容执行【Python情感分析】。
-
-# 前台功能说明
-
-1. 登录、登出功能；
-2. 物业费查询。住户可查询本人的物业费用清单、并缴费；
-3. 车位费查询。住户可查询本人的车位费用清单、并缴费；
-4. 公告通知。住户可查询、发布公告，并进行评论；
-5. 投诉服务。住户可发起投诉信息，并查看反馈结果；
-6. 报修服务。住户可发起报修信息，并查看反馈结果。
+Frontend Features
+1. Login and logout functions.
+2. Property fee inquiry: residents can view and pay their property fee details.
+3. Parking fee inquiry: residents can view and pay their parking fee details.
+4. Announcement notifications: residents can view, post, and comment on announcements.
+5. Complaint service: residents can submit complaints and view feedback.
+6. Repair service: residents can submit repair requests and view feedback.
